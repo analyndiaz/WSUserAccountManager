@@ -37,22 +37,22 @@ For Registration:
 Input:
   
     {
-     "command": "register",
-     "username": "johndoe",
-     "displayName": "Bigjohndoe",
-     "password": "8437ae0231129d7038809d7aa68e89430b73e245b99b9cc662cbc0bd9cc6f6da",
-     "password2": "8437ae0231129d7038809d7aa68e894902345bde25ad0fb662cbc0bd9cc6f6da",
-     "email": "john.doe@mail.com",
-     "verificationCode": "123456"
+       "command": "register",
+       "username": "johndoe",
+       "displayName": "Bigjohndoe",
+       "password": "8437ae0231129d7038809d7aa68e89430b73e245b99b9cc662cbc0bd9cc6f6da",
+       "password2": "8437ae0231129d7038809d7aa68e894902345bde25ad0fb662cbc0bd9cc6f6da",
+       "email": "john.doe@mail.com",
+       "verificationCode": "123456"
     }
 
 
 Output:
       
     {
-      "command": "register",
-      "username": "johndoe",
-      "success": true
+        "command": "register",
+        "username": "johndoe",
+        "success": true
     }
 
 For Checking Username Availability:
