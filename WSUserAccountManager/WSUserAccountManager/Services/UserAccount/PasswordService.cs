@@ -21,7 +21,7 @@ namespace WSUserAccountManager.Services.UserAccount
             _saltService = saltService;
         }
 
-        public async Task<string> GetChallenge(string userName)
+        public async Task<string> GetChallenge(string userName, bool isPrimary)
         {
             var validSalt = await _saltService.GetValidSalt(userName);
             if (validSalt == null)
@@ -30,10 +30,11 @@ namespace WSUserAccountManager.Services.UserAccount
             }
 
             var passwordList = await _repository.GetAll(
-                                    u => u.UserAccount.UserName == userName ||
-                                         u.UserAccount.Email == userName);
+                                    u => (u.UserAccount.UserName == userName ||
+                                         u.UserAccount.Email == userName) &&
+                                         u.IsPrimary == isPrimary);
 
-            var password = passwordList.OrderByDescending(p => p.IsPrimary).FirstOrDefault();
+            var password = passwordList.FirstOrDefault();
 
             return _hashFunction.GetHashValue(validSalt.Value, password.Value);
         }

@@ -28,7 +28,6 @@ namespace WSUserAccountManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddServices();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<UMSEntities>(opt =>
                                                opt.UseInMemoryDatabase("WSUserAccountManager"));
         }
@@ -53,7 +52,6 @@ namespace WSUserAccountManager
             app.Map("/user", (_app) => _app.UseMiddleware<WebSocketMiddleware>(serviceProvider.GetService<UserAccountHandler>()));
 
             app.UseHttpsRedirection();
-            app.UseMvc();
         }
     }
 }

@@ -36,6 +36,8 @@ namespace WSUserAccountManager.Services.UserAccount
         public async Task<OperationResult> Login(string userNameOrEmail, string challenge)
         {
             var operationResult = new OperationResult();
+            var primaryPwd = true;
+
             operationResult.AddResult("username", userNameOrEmail);
             operationResult.AddResult("sessionID", null);
             operationResult.AddResult("validity", 0);
@@ -47,16 +49,22 @@ namespace WSUserAccountManager.Services.UserAccount
                 return operationResult;
             }
 
-            var userAcctModel = await _repository.Get(u => u.UserName == userNameOrEmail ||
-                                                           u.Email == userNameOrEmail);
+            // check if login by userName
+            var userAcctModel = await _repository.Get(u => u.UserName == userNameOrEmail);
             if (userAcctModel == null)
             {
-                operationResult.AddError("User account does not exists.");
-                Console.WriteLine("User account does not exists.");
-                return operationResult;
+                // check if login by email
+                userAcctModel = await _repository.Get(u => u.Email == userNameOrEmail);
+                if (userAcctModel == null) 
+                {
+                    operationResult.AddError("User account does not exists.");
+                    return operationResult;
+                }
+
+                primaryPwd = false;
             }
 
-            var userHashedPwd = await _passwordService.GetChallenge(userNameOrEmail);
+            var userHashedPwd = await _passwordService.GetChallenge(userNameOrEmail, primaryPwd);
             if (!userHashedPwd.Equals(challenge))
             {
                 operationResult.AddError("Challenge is incorrect.");

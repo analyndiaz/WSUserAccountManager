@@ -6,6 +6,6 @@ namespace WSUserAccountManager.Abstractions
     {
         Task Save(int userAcctId, Models.UserAccount userAccount);
 
-        Task<string> GetChallenge(string userName);
+        Task<string> GetChallenge(string userName, bool isPrimary);
     }
 }

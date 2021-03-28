@@ -33,7 +33,7 @@ namespace WSUserAccountManager.Services.UserAccount
             var existingCodes = await _repository.GetAll(c => c.UserAccount.UserName == userAccount.UserName
                                                 && c.UserAccount.Email == userAccount.Email);
 
-            if (existingCodes.Count() > MaxNoCodesPerDay)
+            if (existingCodes.Count() >= MaxNoCodesPerDay)
             {
                 return false;
             }

@@ -16,19 +16,35 @@ namespace WSUserAccountManager.Helpers
 
         public static string ToMessage(OperationResult value, string operation)
         {
-            dynamic dynamicObj = new ExpandoObject() as IDictionary<string, object>;
-            IDictionary<string, object> returnObj = dynamicObj;
-
-            returnObj.Add("command", operation);
+            var propertyObj = CreateMessageObj("command", operation);
 
             foreach (var item in value.Result)
             {
-                returnObj.Add(item.Key.ToLower(), item.Value);
+                propertyObj.Add(item.Key.ToLower(), item.Value);
             }
 
-            returnObj.Add("success", value.Success);
+            propertyObj.Add("success", value.Success);
 
-            return JsonConvert.SerializeObject(returnObj);
+            var jsonDataObj = CreateMessageObj("jsonData", propertyObj);
+
+            return JsonConvert.SerializeObject(jsonDataObj);
+        }
+
+        private static IDictionary<string, object> CreateMessageObj(string propertyName, object value) 
+        {
+            try
+            {
+                dynamic jsonDataObj = new ExpandoObject() as IDictionary<string, object>;
+                IDictionary<string, object> jsonData = jsonDataObj;
+
+                jsonData.Add(propertyName, value);
+
+                return jsonDataObj;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
